@@ -98,8 +98,11 @@ if (!config.site.baseUrl) {
   config.site.baseUrl = '/';
 }
 
-app.use(config.site.baseUrl, middleware(config));
-app.use(config.site.baseUrl, csrf());
+//CHANGE SLL
+//app.use(config.site.baseUrl, middleware(config));
+//app.use(config.site.baseUrl, csrf());
+app.use('/', middleware(config));
+app.use('/', csrf());
 
 if (config.site.sslEnabled) {
   defaultPort     = 443;

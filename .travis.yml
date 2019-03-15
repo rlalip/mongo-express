@@ -1,18 +1,20 @@
-language: node_js
-node_js:
-  - 6
-  - 7
-  - 8
-  - 9
-  - 10
-services:
-  - mongodb
-sudo: false
+language: bash
+services: docker
+
 branches:
   only:
     - master
-    - develop
+
 script:
-  - npm run build
-  - npm run mocha
-  - npm run lint
+  - |
+    (
+      set -Eeuo pipefail
+      set -x
+      docker build -t "$image" .
+    )
+
+after_script:
+  - docker images
+  - docker tag $image "$DOCKER_USERNAME/$image"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push "$DOCKER_USERNAME/$image"
